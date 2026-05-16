@@ -30,7 +30,7 @@ def oracle(expression):
 
 def BisectionGetInteger(target):
     low = 0
-    high = 10
+    high = 50
     while low < high:
         mid = (low + high) // 2
         if oracle(f"{target}>{mid}"):
@@ -71,30 +71,30 @@ def BisectionGetString(target):
 def RecurselyBuildStructure(dict, path):
     # Retrieve child element count
     if oracle(f"count({path}*)=0"):
-        print(f'[Recurse Scan] No child node in {path}')
+        print(f'[RECURSE SCAN] No child node in {path}')
         return # No child element
     ChildCount = BisectionGetInteger(f'count({path}*)')
-    print(f'[Recurse Scan] Found {ChildCount} child node in {path}')
+    print(f'[RECURSE SCAN] Found {ChildCount} child node in {path}')
     while ChildCount != 0:
         NextElement = f'{path}*[{ChildCount}]'
         NextPath = f'{NextElement}/'
         ElementName = BisectionGetString(f'name({NextElement})')
-        if ElementName != "": # Indicating a child node
-            NextDict = {}
-            print(f'[Recurse Scan] Entering {NextPath} | Name {ElementName}')
-            RecurselyBuildStructure(NextDict, NextPath)
-            dict[ElementName] = NextDict
-        else: # Indicating a text node
-            dict[ChildCount] = "TextNode"
+        NextDict = {}
+        NextDict[Name] = ElementName
+        print(f'[RECURSE SCAN] Entering {NextPath} | Name {ElementName}')
+        RecurselyBuildStructure(NextDict, NextPath)
+        dict[ChildCount] = NextDict
         ChildCount = ChildCount - 1
     return
-dict = {}
-path = '/'
-RecurselyBuildStructure(dict, path)
+option = input("Dump XML Structure? (Y/n): ")
+if option != "n":
+    dict = {}
+    path = '/'
+    RecurselyBuildStructure(dict, path)
 
-import pprint
-pprint.pprint(dict, indent=4)
+    import pprint
+    pprint.pprint(dict, indent=4)
 
 while True:
-    node = input("Read Text Node ")
+    node = input("Get Text Node ")
     print(BisectionGetString(node))

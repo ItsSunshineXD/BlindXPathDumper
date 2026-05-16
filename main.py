@@ -59,6 +59,8 @@ def BisectionGetString(target):
                 high = mid
         if low == 0:
             string += "?" # Unknown character
+            print(f'?', end='')
+            sys.stdout.flush()
         else:
             current = alphabets[low]
             string += current

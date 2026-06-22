@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+# XPath盲注脚本 by Sunshine
 import requests
 import json
 import sys
@@ -119,6 +120,6 @@ def RecurselyBuildStructure(objNode, path, depth):
     return
 
 tree = XMLnode(BisectionGetString(f'name(/*)'), 0)
-path = '/' # 根节点作为递归起点
+path = '/*/' # 根节点作为递归起点
 RecurselyBuildStructure(tree, path, 0)
 print(tree)
